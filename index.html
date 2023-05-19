@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Página de Inicio</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+    
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+      margin: 0;
+    }
+    
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #f5f5f5;
+    }
+    
+    ul li {
+      display: inline-block;
+      margin: 10px;
+    }
+    
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    
+    section {
+      margin: 50px auto;
+      max-width: 600px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    form div {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    #enfermedades-contagiosas {
+      display: none;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+      color: #333;
+    }
+    
+    thead {
+      background-color: #f5f5f5;
+    }
+    
+    .error-message {
+      color: #ff0000;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+    
+    button:hover {
+      background-color: #555;
+    }
+    
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #666;
+    }
+    
+    button:focus {
+      outline: none;
+    }
+    
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #enfermedades {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #555;
+      background-color: #fff;
+    }
+    
+    #enfermedades option {
+      padding: 5px;
+    }
+    
+    #enfermedades-contagiosas {
+      margin-top: 20px;
+    }
+    
+    
+    #grilla-table_wrapper {
+      margin-top: 20px;
+    }
+    
+    #grilla-table_length,
+    #grilla-table_filter {
+      margin-bottom: 10px;
+    }
+    
+    
+    table th {
+      font-weight: bold;
+    }
+    
+    table td {
+      vertical-align: middle;
+    }
+    
+    .dataTables_wrapper {
+      overflow-x: auto;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      $('#fecha-nacimiento').change(function() {
+        var fechaNacimiento = new Date($(this).val());
+        var edad = calcularEdad(fechaNacimiento);
+        $('#edad').text('Edad: ' + edad);
+      });
+
+      function calcularEdad(fechaNacimiento) {
+        var hoy = new Date();
+        var edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        var mes = hoy.getMonth() - fechaNacimiento.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+          edad--;
+        }
+
+        return edad;
+      }
+    });
+</script>
+</head>
+<body>
+  <h1>Menú</h1>
+  <ul>
+    <li><a href="#registro">Registro de usuarios</a></li>
+    <li><a href="#grilla">Grilla en jQuery</a></li>
+  </ul>
+
+  <section id="registro">
+    <h2>Registro de Usuarios</h2>
+    <form id="registro-form">
+      <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+      </div>
+      
+      <div>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" required>
+      </div>
+      
+      <div>
+        <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha-nacimiento" required>
+      </div>
+      
+      <div id="edad"></div>
+      
+      
+      <div>
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" required>
+      </div>
+      
+      <div>
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" pattern="[A-Za-z0-9]+" required>
+      </div>
+      
+      <div>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$" 
+          title="La contraseña debe tener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial." required>
+      </div>
+      
+      <div>
+        <label for="confirm-password">Confirmar Contraseña:</label>
+        <input type="password" id="confirm-password" required>
+      </div>
+      <div>
+        <label for="enfermedades">¿Has sufrido de enfermedades?</label>
+        <select id="enfermedades">
+          <option value="no">No</option>
+          <option value="si">Sí</option>
+        </select>
+      </div>
+      
+      <div id="enfermedades-contagiosas">
+        <label for="enfermedades-texto">Especifica las enfermedades contagiosas:</label>
+        <input type="text" id="enfermedades-texto">
+      </div>
+      
+      <script>
+        $(document).ready(function() {
+          $('#enfermedades').change(function() {
+            if ($(this).val() === 'si') {
+              $('#enfermedades-contagiosas').show();
+            } else {
+              $('#enfermedades-contagiosas').hide();
+            }
+          });
+        });
+      </script>
+      
+      <button type="submit">Registrarse</button>
+    </form>
+</section>
+
+<section id="grilla">
+  <h2>Grilla con Filtrado en jQuery</h2>
+
+  <table id="grilla-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Usuario</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    $(document).ready(function() {
+      $('#grilla-table').DataTable({
+        ajax: {
+          url: 'https://jsonplaceholder.typicode.com/users',
+          dataSrc: ''
+        },
+        columns: [
+          { data: 'id' },
+          { data: 'name' },
+          { data: 'username' },
+          { data: 'email' }
+        ]
+      });
+
+      $('#registro-form').submit(function(event) {
+        event.preventDefault(); 
+
+        var nombre = $('#nombre').val();
+        var usuario = $('#usuario').val();
+        var correo = $('#correo').val();
+
+        $('#grilla-table').DataTable().column(1).search(nombre).draw();
+
+        $('#grilla-table').DataTable().column(2).search(usuario).draw();
+
+        $('#grilla-table').DataTable().column(3).search(correo).draw();
+      });
+    });
+  </script>
+</section>
+</body>
+</html>
